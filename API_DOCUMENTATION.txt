@@ -1,0 +1,184 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+CLINIC ROUTES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+/api/clinics
+    Type: POST.
+    Headers: None
+    Description: To register clinic
+	Body:{
+			"name": "abc clinic",
+            "phone": "1234567890"
+			"email": "abc@gmail.com",
+			"password": "123",
+            "address" : "Pune,India"
+			
+		}
+	Response: 
+		1. success
+		2. Failure 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/api/clinics
+    Type: GET
+	Body: Null
+    Description: To get details of all registered clinics
+	Response: 
+		1. success
+		2. Failure 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/api/clinics/:id
+    Type: DELETE
+	Params: Id of clinic to be deleted
+    Body: Null
+    Description: To delete clinic with registered id
+	Response: 
+		1. success
+		2. Failure 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/api/clinics/:id
+    Type: GET
+	Body: Empty
+    Params: Id of clinic to be searched
+    Description: To get particular clinic details
+	Response: 
+		1. success
+		2. Failure 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+PATIENT ROUTES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/api/patients
+    Type: POST
+	Body: {
+     "name": "Gaurav Gaikwad",
+     "phone": "7774444888",
+     "email": "gaurav@gmail.com",
+     "age": "20",
+     "gender" : "Male",
+     "bloodGroup": "B+ve",
+     "weight": "70"
+    }
+    Headers: Bearer eyJhbGciOiJIUz(token of clinic under which patient is being registered)
+    Description: To CREATE a patient under a clinic
+    Access: Protected
+	Response: 
+		1. success -> Returns Patient Object with created data
+		2. Failure -> Failure Message
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/api/patients
+    Type: GET
+    Description: To get all patients of particular clinic
+    Access: Protected
+    Headers: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkwOTg2NzUyLTA4OTItNDYwYy1hOGJhLTZlOGZlYzJjNjVmNiIsImlhdCI6MTY0MzkyMTkyMywiZXhwIjoxNjQ0MzUzOTIzfQ.Kqo6FTVEAIdlsneHqdZFocwD5gaVkoDgnkUxDbnv9qg
+
+Case 1: If we do not pass any query eg /api/patients
+        We will get first 10 patients per result set & to get next page
+        /api/patients?page=1
+        To know how many time the page loop would run will be given by 'totalPages' key value
+  ==> resonse:  Call ->  /api/patients
+                {
+                    "content": [
+                        {1},{2},{3},{4},{5},{6},{7},{8},{9},{10}
+                    ],
+                    "totalPages": 2
+                }
+                To get next page result ->  /api/patients?page=1
+                {
+                    "content": [
+                        {11},{12},{13},{14}
+                    ],
+                    "totalPages": 2
+                }
+
+Case 2: We can send the result size we want per page by 
+      --> /api/patients?page=0&size=5    (page1)
+      --> /api/patients?page=1&size=5    (page2)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/api/patients/:id
+    Type: DELETE
+	Body: nULL
+    Headers: Bearer dfdfdcddf(token of clinic under which PATIENT is being registered)
+    Description: To DELETE PATIENT
+    Access: Protected
+	Response: 
+		1. success -> Returns sUCCES MSG
+		2. Failure -> Failure Message
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+DOCTORS ROUTES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/api/patients
+    Type: GET
+    Description: To get all doctors registered under clinic
+    Access: Protected
+    Headers: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkwOTg2NzUyLTA4OTItNDYwYy1hOGJhLTZlOGZlYzJjNjVmNiIsImlhdCI6MTY0MzkyMTkyMywiZXhwIjoxNjQ0MzUzOTIzfQ.Kqo6FTVEAIdlsneHqdZFocwD5gaVkoDgnkUxDbnv9qg
+    Body: Null
+Response -> {
+    "content": [
+            {
+                "doctor_id": "29f0f8c7-40a3-48f3-931d-c433afed1b35",
+                "clinic_id": "90986752-0892-460c-a8ba-6e8fec2c65f6",
+                "name": "mukhtar mulla",
+                "phone": "7777444448",
+                "email": "mulla@gmail.com",
+                "degree": "MBBS"
+            },
+            {
+                "doctor_id": "f0e249de-9ed5-4690-bf48-b4612d10de25",
+                ......
+            },
+            {
+                "doctor_id": "7a122e63-ff3b-474c-b19e-f14f4e0f0f0e",
+                .....
+            },
+            {
+                .....
+            }
+        ],
+        "totalPages": 1
+    }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/api/doctors
+    Type: POST
+	Body: 
+    {
+        "name":"Rohini Shah",
+        "phone":"789090906",
+        "email":"rohinishah@gmail.com",
+        "degree": "BAHS"
+    }
+    
+    Headers: Bearer dfdfdcddf(token of clinic under which doctor is being registered)
+    Description: To CREATE a doctor under a clinic
+    Access: Protected
+	Response: 
+		1. success -> Returns Doctor Object with created data
+		2. Failure -> Failure Message
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/api/doctors/:id         [eg /api/doctors/dsdzxzkz ]
+    Type: DELETE
+	Body: Null  
+    Headers: Bearer dfdfdcddf(token of clinic under which doctor is being registered)
+    Description: To DELETE a doctor under a clinic
+    Access: Protected
+	Response: 
+		1. success -> Returns Success msg
+		2. Failure -> Failure Message
