@@ -182,3 +182,34 @@ Response -> {
 	Response: 
 		1. success -> Returns Success msg
 		2. Failure -> Failure Message
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+HISTORY ROUTES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/api/history/:patientId/:doctorId
+ Type: POST
+	Body: 
+   {
+    "diagnosis":"pneumoniaasthma",
+    "symptoms":"Cold,fever",
+    "severity":"asymptomatic",
+    "reportUrl":"www.google.com"
+    }
+    
+    Headers: None
+    Description: To create diagnosis history for a patient under a particular dioctor
+    Access: Public
+	Response: 
+		1. success -> {
+            "history_id": "19ccbb77-2c3e-404e-b2fe-009b9137a70b",
+            "date": "2022-02-13T19:49:26.314Z",
+            "patient_id": "65dfbaca-6059-4e96-ac57-233f2d473fa0",
+            "doctor_id": "e5ed3827-9f5a-45f5-b1db-93d034757227",
+            "diagnosis": "pneumoniaasthma",
+            "symptoms": "Cold,fever",
+            "severity": "asymptomatic",
+            "reportUrl": "www.google.com"
+        }
+		2. Failure -> Failure Message

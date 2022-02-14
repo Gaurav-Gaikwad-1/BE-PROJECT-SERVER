@@ -1,5 +1,6 @@
 const {Model,DataTypes} = require('sequelize');
 const sequelize = require('../config/db');
+const PatientHistory = require('./PatientHistory');
 
 class Doctor extends Model{}
 
@@ -40,5 +41,8 @@ Doctor.init({
     timestamps: false ,  
     modelName : 'doctor', 
 })
+
+Doctor.hasMany(PatientHistory,{foreignKey:"doctor_id"})
+PatientHistory.belongsTo(Doctor,{foreignKey:"doctor_id",as:"doctorDetails"});  //patient is associated to patienthistory using an alias 'patientDetails'
 
 module.exports = Doctor;

@@ -65,3 +65,4 @@ exports.deletePatient = asyncHandler(async(req,res) => {
     }
     
 })
+
