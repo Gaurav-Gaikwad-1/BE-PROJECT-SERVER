@@ -6,18 +6,29 @@ const Doctor = require("../models/Doctor");
 exports.addDiagnosisHistory = asyncHandler(async(req,res) => {
     const patient_id = req.params.patientId;
     const doctor_id = req.params.doctorId;
-    const { diagnosis,symptoms,severity,reportUrl } = req.body;
 
-    const history = await PatientHistory.create({
-        patient_id,doctor_id,diagnosis,symptoms,severity,reportUrl
-    })
+    const doctorExists = await Doctor.findOne({ where :{ doctor_id: doctor_id} });
+    const patientExists = await Patient.findOne({ where :{ patient_id: patient_id} });
    
-    if(history){
-       return res.send(history);
+    if(doctorExists && patientExists){
+       
+        const { diagnosis,symptoms,severity,reportUrl } = req.body;
+
+        const history = await PatientHistory.create({
+            patient_id,doctor_id,diagnosis,symptoms,severity,reportUrl
+        })
+    
+        if(history){
+            return res.send(history);
+        }else{
+            res.status(404).json({
+                message:'history Not created'
+            })
+        }
     }else{
-       res.status(404).json({
-           message:'history Not created'
-       })
+        res.status(404).json({
+            message:'DoctorId/PatientId Not Found'
+        })
     }
     
 })
@@ -39,38 +50,60 @@ const doctorModel = {
 exports.getPatientHistoryById = asyncHandler(async(req,res) => {
     const patient_id = req.params.id;
 
-    const patients = await PatientHistory.findAndCountAll({ 
-        where:{patient_id:patient_id},
-        include:[
-            patientModel,
-            doctorModel,
-        ]
-    });
-    if(patients){
-        res.send(patients);
+    const patientExists = await Patient.findOne({ where :{ patient_id: patient_id} });
+
+    if(patientExists){
+
+        const patients = await PatientHistory.findAndCountAll({ 
+            where:{patient_id:patient_id},
+            include:[
+                patientModel,
+                doctorModel,
+            ]
+        });
+
+        if(patients){
+            res.send(patients);
+        }else{
+            res.status(404).json({
+            message:'Patient History Not Found'
+            });
+        }
+
     }else{
-         res.status(404).json({
-           message:'Patient History Not Found'
-       });
+        res.status(404).json({
+            message:'Patient Id Not Found'
+        })
     }
 })
 
 exports.getPatientHistoryByDoctor = asyncHandler(async(req,res) => {
     const doctor_id = req.params.id;
 
-    const patients = await PatientHistory.findAndCountAll({ 
-        where:{doctor_id:doctor_id},
-        include:[
-            patientModel,
-            doctorModel,
-        ]
-    });
-    if(patients){
-        res.send(patients);
+    const doctorExists = await Doctor.findOne({ where :{ doctor_id: doctor_id} });
+
+    if(doctorExists){
+
+        const patients = await PatientHistory.findAndCountAll({ 
+            where:{doctor_id:doctor_id},
+            include:[
+                patientModel,
+                doctorModel,
+            ]
+        });
+
+        if(patients){
+            res.send(patients);
+        }else{
+            res.status(404).json({
+                message:'Patient History Not Found'
+            });
+        }
+
     }else{
-         res.status(404).json({
-           message:'Patient History Not Found'
-       });
+        res.status(404).json({
+            message:'Doctor id Not Found'
+        });
     }
 })
 
