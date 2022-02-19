@@ -4,10 +4,12 @@ const asyncHandler = require('express-async-handler');
 
 exports.addPatient = asyncHandler(async(req,res) => {
     const clinic_id = req.clinic.clinic_id;
-    const {name,email,phone,age,gender,bloodGroup,weight} = req.body;
+    const {name,email,phone,age,gender,bloodgroup,weight} = req.body;
+
+    console.log(req.body)
 
     const patient = await Patient.create({
-        clinic_id:clinic_id,name,phone,email,age,gender,bloodGroup,weight
+        clinic_id:clinic_id,name,phone,email,age,gender,bloodGroup:bloodgroup,weight
     });
 
     if(patient){
@@ -21,29 +23,29 @@ exports.addPatient = asyncHandler(async(req,res) => {
 })
 
 exports.getAllPatients = asyncHandler(async(req,res) => {
-    const pageAsNumber = Number.parseInt(req.query.page); // eg http://localhost:5000/api/patients?page=1&size=5
-    const sizeAsNumber = Number.parseInt(req.query.size);
+    // const pageAsNumber = Number.parseInt(req.query.page); // eg http://localhost:5000/api/patients?page=1&size=5
+    // const sizeAsNumber = Number.parseInt(req.query.size);
     
-    let page=0;
-    if(!Number.isNaN(pageAsNumber) && pageAsNumber> 0){
-        page = pageAsNumber;
-    }
+    // let page=0;
+    // if(!Number.isNaN(pageAsNumber) && pageAsNumber> 0){
+    //     page = pageAsNumber;
+    // }
 
-    let size = 10;
-    if(!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber<10){
-        size = sizeAsNumber;
-    }
+    // let size = 10;
+    // if(!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber<10){
+    //     size = sizeAsNumber;
+    // }
     
     const clinic_id = req.clinic.clinic_id;
     const patients = await Patient.findAndCountAll({
         where: { clinic_id: clinic_id },
-        limit:size,                                 //limit our result set for a page
-        offset: page*size                           //offset value indicates how many starting values to skip
+        // limit:size,                                 //limit our result set for a page
+        // offset: page*size                           //offset value indicates how many starting values to skip
     })
     if(patients){
         return res.status(200).send({
           content: patients.rows,
-          totalPages: Math.ceil(patients.count / size)
+        //   totalPages: Math.ceil(patients.count / size)
     });
     }else{
         res.status(404);
