@@ -189,7 +189,7 @@ HISTORY ROUTES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 /api/history/:patientId/:doctorId
- Type: POST
+    Type: POST
 	Body: 
    {
     "diagnosis":"pneumoniaasthma",
@@ -213,3 +213,71 @@ HISTORY ROUTES
             "reportUrl": "www.google.com"
         }
 		2. Failure -> Failure Message
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/api/history/:patientid
+        Type: GET
+        Body: Null  
+        Headers: None
+        Description: To get all diagnosis history of a patient by its id
+        Access: Public
+        Response: 
+            1. success -> 
+            {
+            "count": 1,
+            "rows": [
+                {
+                    "history_id": "f0a863a7-a663-4714-95ce-e9ba38d4fe44",
+                    "patient_id": "65dfbaca-6059-4e96-ac57-233f2d473fa0",
+                    "doctor_id": "e5ed3827-9f5a-45f5-b1db-93d034757227",
+                    "date": "2022-02-13",
+                    "diagnosis": "asthma",
+                    "symptoms": "Cold,cough",
+                    "severity": "asymptomatic",
+                    "reportUrl": "www.google.com",
+                    "patientDetails": {
+                        "name": "Neha shelar",
+                        "phone": "7774444888",
+                        "email": "nehashelar@gmail.com",
+                        "age": 40,
+                        "gender": "Female",
+                        "bloodGroup": "B+ve",
+                        "weight": 60
+                    },
+            ]
+            2. Failure -> Failure Message
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/api/history/:doctorid
+        Type: GET
+        Body: Null  
+        Headers: None
+        Description: To get all diagnosis history of patients treated by a doctor 
+        Access: Public
+         Response: 
+            1. success -> 
+            {
+            "count": 1,
+            "rows": [
+                {
+                    "history_id": "f0a863a7-a663-4714-95ce-e9ba38d4fe44",
+                    "patient_id": "65dfbaca-6059-4e96-ac57-233f2d473fa0",
+                    "doctor_id": "e5ed3827-9f5a-45f5-b1db-93d034757227",
+                    "date": "2022-02-13",
+                    "diagnosis": "asthma",
+                    "symptoms": "Cold,cough",
+                    "severity": "asymptomatic",
+                    "reportUrl": "www.google.com",
+                    "patientDetails": {
+                        "name": "Neha shelar",
+                        "phone": "7774444888",
+                        "email": "nehashelar@gmail.com",
+                        "age": 40,
+                        "gender": "Female",
+                        "bloodGroup": "B+ve",
+                        "weight": 60
+                    },
+            ]
+            2. Failure -> Failure Message
