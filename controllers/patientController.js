@@ -66,3 +66,21 @@ exports.deletePatient = asyncHandler(async(req,res) => {
     
 })
 
+exports.getPatientByID = asyncHandler(async (req, res) => {
+    const patient_id = req.params.id // eg http://localhost:5000/api/doctors/:id
+
+    // const clinic_id = req.clinic.clinic_id;
+    const patient = await Patient.findOne({
+        where: { patient_id: patient_id }
+    })
+    if (patient) {
+        // console.log(patient.dataValues)
+        return res.status(200).send({
+            content: patient.dataValues,
+            message:"found"
+        });
+    } else {
+        res.status(404);
+        throw new Error("Data Not Found");
+    }
+})

@@ -12,12 +12,12 @@ exports.protect = asyncHandler(async(req,res,next) => {
     ) {
         try{
 
-            token = req.headers.authorization.split(' ')[2];     //req.headers.authorization.split(' ') ===>  ['Bearer','eyznjnxkdjlfnjkdnfjkdnfdndfdfdfd']
-            //console.log(token);
+            token = req.headers.authorization.split(' ')[1];     //req.headers.authorization.split(' ') ===>  ['Bearer','eyznjnxkdjlfnjkdnfjkdnfdndfdfdfd']
+            // console.log(token);
 
             const decoded = jwt.verify(token,process.env.JWT_SECRET);    //decoded now contains ===> { id: '5f91d31d62e5fc46e8f6f0f5', iat: 1609829806, exp: 1612421806 }
 
-          //  console.log(decoded);
+            // console.log(decoded);
             req.clinic = await Clinic.findOne({ where: { clinic_id: decoded.id}}) //here we put all of user's data except password in this req.user which will have access to in all of our routes i.e protected routes
             if(req.clinic == null){
                 return res.send("Invalid Token, Please Login again");
